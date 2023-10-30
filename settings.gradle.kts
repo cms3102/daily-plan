@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Daily Plan"
 include(":app")
+include(":core:common")

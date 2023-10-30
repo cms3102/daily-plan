@@ -1,4 +1,4 @@
-package com.sergio.dailyplan.ui.theme
+package com.sergio.common.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
