@@ -1,4 +1,4 @@
-package com.sergio.common
+package com.sergio.ui
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

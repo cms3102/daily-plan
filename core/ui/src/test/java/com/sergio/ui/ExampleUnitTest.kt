@@ -1,4 +1,4 @@
-package com.sergio.common
+package com.sergio.ui
 
 import org.junit.Test
 

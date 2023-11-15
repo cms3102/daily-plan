@@ -1,4 +1,4 @@
-package com.sergio.common.theme
+package com.sergio.ui.theme
 
 import android.app.Activity
 import android.os.Build
