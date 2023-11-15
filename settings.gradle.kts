@@ -13,6 +13,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Daily Plan"
+rootProject.name = "DailyPlan"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
-include(":core:common")
+include(":core:ui")
+include(":core:data")
+include(":feature")
