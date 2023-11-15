@@ -1,4 +1,4 @@
-package com.sergio.feature
+package com.sergio.home
 
 import org.junit.Test
 
