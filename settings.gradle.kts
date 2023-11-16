@@ -16,6 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "DailyPlan"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
-include(":core:ui")
+include(":core:common")
 include(":core:data")
 include(":feature:home")
