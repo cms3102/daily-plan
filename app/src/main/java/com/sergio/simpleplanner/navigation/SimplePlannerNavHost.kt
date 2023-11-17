@@ -7,7 +7,7 @@ import com.sergio.home.navigation.homeRoute
 import com.sergio.home.navigation.homeScreen
 
 @Composable
-internal fun DailyPlanNavHost(
+internal fun SimplePlannerNavHost(
     appState: AppState,
     paddingValues: PaddingValues
 ) {

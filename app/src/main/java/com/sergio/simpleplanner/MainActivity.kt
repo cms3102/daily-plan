@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.sergio.simpleplanner.ui.DailyPlanApp
-import com.sergio.common.theme.DailyPlanTheme
+import com.sergio.simpleplanner.ui.SimplePlannerApp
+import com.sergio.common.theme.SimplePlannerTheme
 import com.sergio.simpleplanner.state.MainState
 import com.sergio.simpleplanner.state.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,8 +24,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            DailyPlanTheme {
-                DailyPlanApp()
+            SimplePlannerTheme {
+                SimplePlannerApp()
             }
         }
     }
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    DailyPlanTheme {
-        DailyPlanApp()
+    SimplePlannerTheme {
+        SimplePlannerApp()
     }
 }

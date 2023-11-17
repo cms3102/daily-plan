@@ -1,1 +1,1 @@
-# daily-plan
+# simple-planner
