@@ -1,4 +1,4 @@
-package com.sergio.dailyplan.navigation
+package com.sergio.simpleplanner.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

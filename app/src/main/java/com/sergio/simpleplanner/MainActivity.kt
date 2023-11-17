@@ -1,18 +1,17 @@
-package com.sergio.dailyplan
+package com.sergio.simpleplanner
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.sergio.dailyplan.ui.DailyPlanApp
+import com.sergio.simpleplanner.ui.DailyPlanApp
 import com.sergio.common.theme.DailyPlanTheme
-import com.sergio.dailyplan.output.MainState
-import com.sergio.dailyplan.viewmodel.MainViewModel
+import com.sergio.simpleplanner.state.MainState
+import com.sergio.simpleplanner.state.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

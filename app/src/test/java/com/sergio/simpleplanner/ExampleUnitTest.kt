@@ -1,4 +1,4 @@
-package com.sergio.dailyplan
+package com.sergio.simpleplanner
 
 import org.junit.Test
 

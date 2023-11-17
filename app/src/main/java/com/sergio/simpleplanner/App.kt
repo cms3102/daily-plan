@@ -1,4 +1,4 @@
-package com.sergio.dailyplan
+package com.sergio.simpleplanner
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -1,11 +1,10 @@
-package com.sergio.dailyplan.ui
+package com.sergio.simpleplanner.ui
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.rememberNavController
 import com.sergio.common.component.DefaultScaffold
-import com.sergio.dailyplan.navigation.AppState
-import com.sergio.dailyplan.navigation.DailyPlanNavHost
-import com.sergio.dailyplan.navigation.rememberAppState
+import com.sergio.simpleplanner.navigation.AppState
+import com.sergio.simpleplanner.navigation.DailyPlanNavHost
+import com.sergio.simpleplanner.navigation.rememberAppState
 
 @Composable
 internal fun DailyPlanApp(

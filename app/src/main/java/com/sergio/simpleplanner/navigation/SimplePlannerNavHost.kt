@@ -1,8 +1,7 @@
-package com.sergio.dailyplan.navigation
+package com.sergio.simpleplanner.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.sergio.home.navigation.homeRoute
 import com.sergio.home.navigation.homeScreen

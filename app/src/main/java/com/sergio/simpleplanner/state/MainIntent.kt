@@ -1,4 +1,4 @@
-package com.sergio.dailyplan.input
+package com.sergio.simpleplanner.state
 
 import com.sergio.common.base.BaseIntent
 

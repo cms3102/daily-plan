@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.sergio.dailyplan"
+    namespace = "com.sergio.simpleplanner"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.sergio.dailyplan"
+        applicationId = "com.sergio.simpleplanner"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

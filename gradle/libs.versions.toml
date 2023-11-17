@@ -30,7 +30,7 @@ datastore = "1.0.0"
 coroutines = "1.7.3"
 accompanist = "0.27.0"
 appcompat = "1.6.1"
-material = "1.10.0"
+material = "1.5.4"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,6 +47,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+material = { group = "androidx.compose.material", name = "material", version.ref = "material"}
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "androidUiGraphics" }
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
@@ -73,7 +74,6 @@ coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", vers
 compose-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 compose-animation = { module = "androidx.compose.animation:animation" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 ktx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx" }
 
 [plugins]
