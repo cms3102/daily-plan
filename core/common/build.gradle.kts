@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
 
+    // navigation
+    implementation(libs.compose.navigation)
+
     // di
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

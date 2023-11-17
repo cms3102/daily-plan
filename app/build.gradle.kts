@@ -62,6 +62,10 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    // navigation
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.animation)
+
     // android
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)

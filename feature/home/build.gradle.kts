@@ -42,6 +42,9 @@ android {
 }
 
 dependencies {
+    // modules
+    implementation(projects.core.common)
+
     // android
     implementation(libs.core.ktx)
     implementation(platform(libs.compose.bom))
@@ -53,6 +56,9 @@ dependencies {
     // di
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    // navigation
+    implementation(libs.compose.navigation)
 
     // test
     testImplementation(libs.junit)
