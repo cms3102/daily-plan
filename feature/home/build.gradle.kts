@@ -44,15 +44,19 @@ android {
 dependencies {
     // modules
     implementation(projects.core.common)
+    implementation(projects.core.data)
+    implementation(projects.core.model)
 
     // android
     implementation(libs.core.ktx)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.material)
+    implementation(libs.lifecycle.compose)
 
     // di
     implementation(libs.hilt.android)

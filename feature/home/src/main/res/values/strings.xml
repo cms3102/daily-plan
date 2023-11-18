@@ -4,6 +4,7 @@
     <string name="home_app_bar_title">홈</string>
     <string name="pending_tasks">진행 중인 작업</string>
     <string name="completed_tasks">완료한 작업</string>
+    <string name="task_list_title">작업 목록</string>
     <string name="task_title">제목</string>
     <string name="task_description">설명</string>
     <string name="create">생성</string>
@@ -13,5 +14,4 @@
     <string name="status_to_do">시작 전</string>
     <string name="status_in_progress">진행 중</string>
     <string name="status_done">완료</string>
-    <string name="no_data">등록한 작업이 없습니다.</string>
 </resources>

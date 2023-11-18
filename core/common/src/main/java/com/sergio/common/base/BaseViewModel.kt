@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<I : BaseIntent, S : BaseState> : ViewModel() {
 
@@ -19,7 +20,12 @@ abstract class BaseViewModel<I : BaseIntent, S : BaseState> : ViewModel() {
 
     abstract val state: StateFlow<S>
 
-    suspend fun sendIntent(intent: I) = _intentHandlerFlow.emit(intent)
+    fun sendIntent(intent: I) {
+        viewModelScope.launch {
+            _intentHandlerFlow.emit(intent)
+        }
+    }
+
     private fun Flow<I>.process() = onEach { intent ->
         handleIntent(intent)
     }

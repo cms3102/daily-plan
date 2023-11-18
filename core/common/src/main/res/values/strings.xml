@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error">오류가 발생하였습니다.</string>
+    <string name="no_data">등록한 작업이 없습니다.</string>
+</resources>

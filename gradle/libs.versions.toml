@@ -17,7 +17,6 @@ retrofit = "2.9.0"
 okhttp = "4.10.0"
 gson = "2.10.1"
 serializationJson = "1.6.0"
-lifecycle = "2.6.2"
 coilCompose = "2.5.0"
 hilt = "2.48.1"
 javaxInject = "1"
@@ -31,6 +30,9 @@ coroutines = "1.7.3"
 accompanist = "0.27.0"
 appcompat = "1.6.1"
 material = "1.5.4"
+kotlinJvm = "1.9.20"
+room = "2.6.0"
+lifecycleCompose = "2.6.2"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -60,7 +62,6 @@ okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-i
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serializationJson" }
-androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
@@ -75,6 +76,10 @@ compose-windowSizeClass = { group = "androidx.compose.material3", name = "materi
 compose-animation = { module = "androidx.compose.animation:animation" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 ktx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx" }
+room = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+lifecycle-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleCompose" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -82,6 +87,7 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 hilt-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp-plugin = { id = "com.google.devtools.ksp", version.ref = "kspPlugin" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinJvm" }
 
 [bundles]
 
