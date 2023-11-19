@@ -6,7 +6,7 @@ junit = "4.13.2"
 testExtJunit = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.6.2"
-activityCompose = "1.8.0"
+activityCompose = "1.8.1"
 composeBom = "2023.10.01"
 androidUiGraphics = "1.5.4"
 lottie = "6.1.0"
@@ -33,6 +33,7 @@ material = "1.5.4"
 kotlinJvm = "1.9.20"
 room = "2.6.0"
 lifecycleCompose = "2.6.2"
+accompanistNavigation = "0.33.2-alpha"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -80,6 +81,7 @@ room = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 lifecycle-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleCompose" }
+accompanist-navigation = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanistNavigation" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

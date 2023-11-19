@@ -9,9 +9,9 @@ import androidx.compose.ui.unit.dp
 object ShapeRules {
 
     val roundedCornerShape = Shapes(
-        small = RoundedCornerShape(4.dp),
-        medium = RoundedCornerShape(8.dp),
-        large = RoundedCornerShape(12.dp),
+        small = RoundedCornerShape(8.dp),
+        medium = RoundedCornerShape(12.dp),
+        large = RoundedCornerShape(16.dp),
     )
 
 }
@@ -24,3 +24,10 @@ object ElevationRules {
     )
 
 }
+
+val BottomSheetShape = RoundedCornerShape(
+    topStart = 20.dp,
+    topEnd = 20.dp,
+    bottomEnd = 0.dp,
+    bottomStart = 0.dp
+)

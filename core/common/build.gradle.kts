@@ -54,6 +54,9 @@ dependencies {
     // navigation
     implementation(libs.compose.navigation)
 
+    // animation
+    implementation(libs.lottie)
+
     // di
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

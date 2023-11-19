@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface TaskLocalDataSource {
 
+    fun loadAllTasksFlow(): Flow<List<TaskEntity>>
+
     suspend fun loadAllTasks(): List<TaskEntity>
 
     suspend fun saveTask(task: TaskEntity)

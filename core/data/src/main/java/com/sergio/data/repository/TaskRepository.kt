@@ -7,6 +7,8 @@ interface TaskRepository {
 
     val tasks: Flow<List<Task>>
 
+    suspend fun loadAllTasksFlow(): Flow<List<Task>>
+
     suspend fun loadAllTasks(): List<Task>
 
     suspend fun saveTask(

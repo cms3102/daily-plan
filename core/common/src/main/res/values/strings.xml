@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="error">오류가 발생하였습니다.</string>
-    <string name="no_data">등록한 작업이 없습니다.</string>
+    <string name="no_data">아직 일정을 등록하지 않으셨네요.</string>
 </resources>

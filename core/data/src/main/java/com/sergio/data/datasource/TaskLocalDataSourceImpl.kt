@@ -9,6 +9,10 @@ internal class TaskLocalDataSourceImpl @Inject constructor(
     private val taskDao: TaskDao
 ) : TaskLocalDataSource {
 
+    override fun loadAllTasksFlow(): Flow<List<TaskEntity>> {
+        return taskDao.loadAllTasksFlow()
+    }
+
     override suspend fun loadAllTasks(): List<TaskEntity> {
         return taskDao.loadAllTasks()
     }

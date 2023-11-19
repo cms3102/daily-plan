@@ -15,6 +15,6 @@ internal fun SimplePlannerNavHost(
         navController = appState.navController,
         startDestination = homeRoute
     ) {
-        homeScreen()
+        homeScreen(appState.navController)
     }
 }

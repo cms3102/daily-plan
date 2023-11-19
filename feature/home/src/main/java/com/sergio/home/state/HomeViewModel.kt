@@ -4,8 +4,12 @@ import androidx.lifecycle.viewModelScope
 import com.sergio.common.base.BaseViewModel
 import com.sergio.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +24,7 @@ class HomeViewModel @Inject constructor(
         get() = _state
 
     init {
-        sendIntent(HomeIntent.LoadAllTasks)
+        observeTasks()
     }
 
     override fun updateState(reduce: () -> HomeState) {
@@ -31,18 +35,44 @@ class HomeViewModel @Inject constructor(
 
     override fun handleIntent(intent: HomeIntent) {
         when(intent) {
-            HomeIntent.LoadAllTasks -> {
+            is HomeIntent.LoadAllTasks -> {
                 loadAllTasks()
             }
+            is HomeIntent.SaveTask -> {
+                saveTask(intent.title, intent.description)
+            }
+        }
+    }
+
+    private fun observeTasks() {
+        viewModelScope.launch {
+            taskRepository.tasks
+                .distinctUntilChanged()
+                .map { it.toModel() }
+                .collectLatest { model ->
+                    updateState {
+                        HomeState.Success(model)
+                    }
+                }
         }
     }
 
     private fun loadAllTasks() {
         viewModelScope.launch {
-            val result = taskRepository.loadAllTasks()
+            val model  = async {
+                val taskList = taskRepository.loadAllTasks()
+                taskList.toModel()
+            }.await()
             updateState {
-                HomeState.Success(result)
+                HomeState.Success(model)
             }
+        }
+    }
+
+    private fun saveTask(title: String, description: String) {
+        viewModelScope.launch {
+            // TODO dueDate 작업 필요
+            taskRepository.saveTask(title, description, "")
         }
     }
 

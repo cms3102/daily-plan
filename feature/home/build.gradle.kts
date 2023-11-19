@@ -66,6 +66,9 @@ dependencies {
     // navigation
     implementation(libs.compose.navigation)
 
+    // animation
+    implementation(libs.lottie)
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

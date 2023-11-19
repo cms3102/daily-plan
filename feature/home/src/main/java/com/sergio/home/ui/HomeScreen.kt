@@ -13,19 +13,33 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,46 +47,79 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.challenge.model.Task
 import com.sergio.common.component.DefaultError
 import com.sergio.common.component.Loading
 import com.sergio.common.component.NoData
+import com.sergio.common.theme.BottomSheetShape
 import com.sergio.common.theme.ElevationRules
+import com.sergio.common.theme.LightPurple
 import com.sergio.common.theme.PaddingRules
+import com.sergio.common.theme.PastelGreen
+import com.sergio.common.theme.PastelYellow
 import com.sergio.common.theme.ShapeRules
 import com.sergio.common.theme.SimplePlannerTheme
 import com.sergio.home.R
 import com.sergio.home.state.HomeState
 import com.sergio.home.state.HomeViewModel
+import com.sergio.home.state.TaskModel
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val coroutineScope = rememberCoroutineScope()
     val taskState by viewModel.state.collectAsStateWithLifecycle()
 
     ModalBottomSheetLayout(
-        modifier = Modifier.padding(PaddingRules.Layout.all),
+        sheetState = bottomSheetState,
+        sheetShape = BottomSheetShape,
         sheetContent = {
-
-        }
+            RegistrationScreen(
+                state = bottomSheetState,
+                viewModel = viewModel
+            )
+        },
     ) {
         when(val state = taskState) {
             is HomeState.Loading -> Loading()
             is HomeState.Success -> {
-                Column {
-                    TaskInformation()
-                    if (state.data.isNotEmpty()) {
-                        TaskList(state.data)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            horizontal = PaddingRules.horizontal,
+                            vertical = PaddingRules.vertical
+                        )
+                ) {
+                    TitleBar()
+                    val taskData = state.data
+                    TaskInformation(taskData)
+                    if (taskData.taskList.isNotEmpty()) {
+                        TaskList(taskData.taskList)
                     } else {
                         NoData()
+                    }
+                }
+                RegistrationButton {
+                    coroutineScope.launch {
+                        bottomSheetState.show()
                     }
                 }
             }
@@ -82,23 +129,38 @@ fun HomeScreen(
 }
 
 @Composable
-fun TaskInformation() {
-    Column(modifier = Modifier.fillMaxSize()) {
+fun TitleBar() {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .wrapContentHeight(),
+        text = stringResource(id = R.string.home_title),
+        fontWeight = FontWeight.Bold,
+        fontSize = 26.sp,
+        fontFamily = FontFamily.SansSerif
+    )
+}
+
+@Composable
+fun TaskInformation(data: TaskModel) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = ShapeRules.roundedCornerShape.small,
+            shape = ShapeRules.roundedCornerShape.medium,
             color = MaterialTheme.colorScheme.primary
         ) {
-            Column(modifier = Modifier.padding(PaddingRules.Box.all)) {
+            Column(
+                modifier = Modifier
+                    .padding(PaddingRules.Box.all)
+                    .height(100.dp)
+            ) {
                 Text(
                     text = stringResource(id = R.string.pending_tasks),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                Row(
-                    modifier = Modifier.background(Color.LightGray),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
                             .size(10.dp)
@@ -107,19 +169,13 @@ fun TaskInformation() {
                     )
                     Text(
                         modifier = Modifier
-                            .padding(start = 8.dp)
-                            .background(Color.Green),
+                            .padding(start = 8.dp),
                         text = stringResource(id = R.string.pending_tasks),
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = LocalTextStyle.current.merge(
                             TextStyle(
-                                lineHeight = 1.em,
                                 platformStyle = PlatformTextStyle(
                                     includeFontPadding = false
-                                ),
-                                lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Center,
-                                    trim = LineHeightStyle.Trim.None
                                 )
                             )
                         )
@@ -136,28 +192,48 @@ fun TaskInformation() {
         ) {
             Card(
                 modifier = Modifier.weight(1f),
-                shape = ShapeRules.roundedCornerShape.small,
-                elevation = ElevationRules.cardElevation()
+                shape = ShapeRules.roundedCornerShape.medium,
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                )
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "11")
-                    Text(text = stringResource(id = R.string.completed_tasks))
+                    Text(text = data.completedCount.toString())
+                    Text(
+                        modifier = Modifier.padding(top = 8.dp),
+                        text = stringResource(id = R.string.completed_tasks),
+                        color = Color.Gray
+                    )
                 }
             }
             Card(
                 modifier = Modifier.weight(1f),
-                shape = ShapeRules.roundedCornerShape.small,
-                elevation = ElevationRules.cardElevation()
+                shape = ShapeRules.roundedCornerShape.medium,
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                )
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "11")
-                    Text(text = stringResource(id = R.string.pending_tasks))
+                    Text(text = data.pendingCount.toString())
+                    Text(
+                        modifier = Modifier.padding(top = 8.dp),
+                        text = stringResource(id = R.string.pending_tasks),
+                        color = Color.Gray
+                    )
                 }
             }
         }
@@ -166,15 +242,18 @@ fun TaskInformation() {
 
 @Composable
 fun TaskList(taskList: List<Task>) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text = stringResource(id = R.string.task_list_title))
-        LazyColumn {
-            items(
-                items = taskList,
-                key = { task -> task.id }
-            ) { task ->
-                TaskItem(task = task)
-            }
+    Text(
+        modifier = Modifier.padding(top = 20.dp, bottom = 8.dp),
+        text = stringResource(id = R.string.task_list_title),
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp
+    )
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(
+            items = taskList,
+            key = { task -> task.id }
+        ) { task ->
+            TaskItem(task = task)
         }
     }
 }
@@ -182,31 +261,87 @@ fun TaskList(taskList: List<Task>) {
 @Composable
 fun TaskItem(task: Task) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = ShapeRules.roundedCornerShape.small
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 5.dp)
+            .height(120.dp),
+        shape = ShapeRules.roundedCornerShape.medium,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier
-                    .width(8.dp)
+                    .width(6.dp)
                     .background(MaterialTheme.colorScheme.primary)
                     .fillMaxHeight()
             )
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = task.title)
-                Text(text = task.description)
-                Text(text = task.dueDate)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = task.title,
+                    color = MaterialTheme.colorScheme.onSecondary,
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp)
+                        .weight(1f)
+                    ,
+                    text = task.description,
+                    color = Color.Gray,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = task.dueDate,
+                        color = Color.Gray,
+                        fontSize = 12.sp
+                    )
+                }
             }
         }
     }
 }
 
+@Composable
+fun RegistrationButton(
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        FloatingActionButton(
+            modifier = Modifier.padding(end = 20.dp, bottom = 30.dp),
+            shape = RoundedCornerShape(12.dp),
+            backgroundColor = MaterialTheme.colorScheme.primary,
+            onClick = { onClick.invoke() }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                tint = MaterialTheme.colorScheme.onPrimary,
+                contentDescription = "Task Registration Button"
+            )
+        }
+    }
+}
 
 
 @Preview
 @Composable
 fun HomeScreenPreview() {
     SimplePlannerTheme {
-        HomeScreen()
+        HomeScreen(rememberNavController())
     }
 }
