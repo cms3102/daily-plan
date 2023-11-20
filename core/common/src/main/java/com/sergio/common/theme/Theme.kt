@@ -1,8 +1,10 @@
 package com.sergio.common.theme
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -28,7 +30,7 @@ private val lightColorScheme = lightColorScheme(
     tertiary = Pink40,
     background = LightGray,
     onSecondary = Color.Black,
-    onPrimary = Color.White
+    onPrimary = Color.White,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -61,7 +63,7 @@ fun SimplePlannerTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.background.toArgb()
+//            window.statusBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme.not()
         }
     }
@@ -71,4 +73,9 @@ fun SimplePlannerTheme(
         typography = Typography,
         content = content
     )
+}
+
+fun changeStatusBarColor(context: Context, color: Color) {
+    val window = (context as Activity).window
+    window.statusBarColor = color.toArgb()
 }

@@ -59,6 +59,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.challenge.detail.navigation.navigateToDetail
 import com.challenge.model.Task
 import com.sergio.common.component.DefaultError
 import com.sergio.common.component.Loading
@@ -68,6 +69,7 @@ import com.sergio.common.theme.ElevationRules
 import com.sergio.common.theme.LightPurple
 import com.sergio.common.theme.PaddingRules
 import com.sergio.common.theme.PastelGreen
+import com.sergio.common.theme.PastelPurple
 import com.sergio.common.theme.PastelYellow
 import com.sergio.common.theme.ShapeRules
 import com.sergio.common.theme.SimplePlannerTheme
@@ -112,7 +114,12 @@ fun HomeScreen(
                     val taskData = state.data
                     TaskInformation(taskData)
                     if (taskData.taskList.isNotEmpty()) {
-                        TaskList(taskData.taskList)
+                        TaskList(
+                            taskList = taskData.taskList,
+                            onClickItem = { task ->
+                                navController.navigateToDetail(task)
+                            }
+                        )
                     } else {
                         NoData()
                     }
@@ -133,6 +140,7 @@ fun TitleBar() {
     Text(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 10.dp)
             .height(60.dp)
             .wrapContentHeight(),
         text = stringResource(id = R.string.home_title),
@@ -241,7 +249,10 @@ fun TaskInformation(data: TaskModel) {
 }
 
 @Composable
-fun TaskList(taskList: List<Task>) {
+fun TaskList(
+    taskList: List<Task>,
+    onClickItem: (task: Task) -> Unit
+) {
     Text(
         modifier = Modifier.padding(top = 20.dp, bottom = 8.dp),
         text = stringResource(id = R.string.task_list_title),
@@ -253,26 +264,36 @@ fun TaskList(taskList: List<Task>) {
             items = taskList,
             key = { task -> task.id }
         ) { task ->
-            TaskItem(task = task)
+            TaskItem(
+                task = task,
+                onClick = onClickItem
+            )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskItem(task: Task) {
+fun TaskItem(
+    task: Task,
+    onClick: (task: Task) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 5.dp)
             .height(120.dp),
         shape = ShapeRules.roundedCornerShape.medium,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary),
+        onClick = {
+            onClick.invoke(task)
+        }
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier
                     .width(6.dp)
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(PastelPurple)
                     .fillMaxHeight()
             )
             Column(

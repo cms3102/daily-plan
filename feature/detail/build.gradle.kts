@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sergio.home"
+    namespace = "com.challenge.detail"
     compileSdk = 34
 
     defaultConfig {
@@ -46,7 +46,6 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.data)
     implementation(projects.core.model)
-    implementation(projects.feature.detail)
 
     // android
     implementation(libs.core.ktx)
@@ -58,6 +57,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.material)
     implementation(libs.lifecycle.compose)
+    implementation(libs.constrintlayout)
 
     // di
     implementation(libs.hilt.android)
@@ -69,6 +69,9 @@ dependencies {
 
     // animation
     implementation(libs.lottie)
+
+    // json
+    implementation(libs.gson)
 
     // test
     testImplementation(libs.junit)

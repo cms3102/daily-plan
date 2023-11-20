@@ -1,5 +1,6 @@
 package com.sergio.simpleplanner.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController

@@ -57,6 +57,7 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.data)
     implementation(projects.feature.home)
+    implementation(projects.feature.detail)
 
     // di
     implementation(libs.hilt.android)
@@ -77,6 +78,9 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.androidx.core.splashscreen)
+
+    // json
+    implementation(libs.gson)
 
     // test
     testImplementation(libs.junit)

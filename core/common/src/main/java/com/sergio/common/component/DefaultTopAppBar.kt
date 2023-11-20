@@ -1,5 +1,6 @@
 package com.sergio.common.component
 
+import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -7,18 +8,24 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.sergio.common.base.BaseAppState
+import androidx.navigation.NavController
 import com.sergio.common.base.BaseDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTopAppBar(
-    appState: BaseAppState,
+    navController: NavController,
+    showBackButton: Boolean,
     destination: BaseDestination?,
-    scrollBehavior: TopAppBarScrollBehavior? = null
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors()
 ) {
     TopAppBar(
         title = {
@@ -27,8 +34,8 @@ fun DefaultTopAppBar(
             }
         },
         navigationIcon = {
-            if (!appState.showBackButton) {
-                IconButton(onClick = { appState.navController.popBackStack() }) {
+            if (showBackButton) {
+                IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = null
@@ -36,6 +43,7 @@ fun DefaultTopAppBar(
                 }
             }
         },
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
+        colors = colors
     )
 }

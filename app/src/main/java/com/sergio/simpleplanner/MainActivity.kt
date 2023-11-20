@@ -3,10 +3,12 @@ package com.sergio.simpleplanner
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.sergio.simpleplanner.ui.SimplePlannerApp
 import com.sergio.common.theme.SimplePlannerTheme
@@ -22,6 +24,8 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
 
         setContent {
             SimplePlannerTheme {

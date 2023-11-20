@@ -12,10 +12,4 @@
     <string name="request_task_description">일정의 내용을 입력해 주세요.</string>
     <string name="request_input_all">제목과 내용을 입력해 주세요.</string>
     <string name="create">생성</string>
-    <string name="view_by_status">상태별로 보기</string>
-    <string name="detail_destination_title">상세</string>
-    <string name="detail_app_bar_title">상세</string>
-    <string name="status_to_do">시작 전</string>
-    <string name="status_in_progress">진행 중</string>
-    <string name="status_done">완료</string>
 </resources>
