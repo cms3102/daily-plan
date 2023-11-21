@@ -65,6 +65,7 @@ import com.sergio.common.component.DefaultError
 import com.sergio.common.component.Loading
 import com.sergio.common.component.NoData
 import com.sergio.common.theme.BottomSheetShape
+import com.sergio.common.theme.DeepYellow
 import com.sergio.common.theme.ElevationRules
 import com.sergio.common.theme.LightPurple
 import com.sergio.common.theme.PaddingRules
@@ -85,7 +86,10 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
     val coroutineScope = rememberCoroutineScope()
     val taskState by viewModel.state.collectAsStateWithLifecycle()
 
@@ -152,43 +156,64 @@ fun TitleBar() {
 
 @Composable
 fun TaskInformation(data: TaskModel) {
+    val chartColors = listOf(
+        DeepYellow,
+        PastelPurple,
+    )
     Column(modifier = Modifier.fillMaxWidth()) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = ShapeRules.roundedCornerShape.medium,
             color = MaterialTheme.colorScheme.primary
         ) {
-            Column(
+            Row(
                 modifier = Modifier
-                    .padding(PaddingRules.Box.all)
-                    .height(100.dp)
+                    .fillMaxWidth()
+                    .height(180.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = stringResource(id = R.string.pending_tasks),
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .clip(CircleShape)
-                            .background(Color.Red)
-                    )
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(PaddingRules.Box.all)
+                ) {
                     Text(
-                        modifier = Modifier
-                            .padding(start = 8.dp),
                         text = stringResource(id = R.string.pending_tasks),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(10.dp)
+                                .clip(CircleShape)
+                                .background(chartColors.first())
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 8.dp),
+                            text = stringResource(id = R.string.pending_tasks),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = LocalTextStyle.current.merge(
+                                TextStyle(
+                                    platformStyle = PlatformTextStyle(
+                                        includeFontPadding = false
+                                    )
                                 )
                             )
                         )
-                    )
+                    }
                 }
+
+                PieChart(
+                    data = mapOf(
+                        "미완료" to 40,
+                        "완료" to 60
+                    ),
+                    colors = chartColors,
+                    modifier = Modifier.weight(1f)
+                )
+
             }
         }
 

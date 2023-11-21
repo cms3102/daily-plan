@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.challenge.model.Task
+import com.challenge.model.TaskType
 
 @Entity(tableName = TaskEntity.NAME)
 data class TaskEntity(
@@ -16,6 +17,7 @@ data class TaskEntity(
     @ColumnInfo("due_date_original")
     val dueDateOriginal: Long? = null,
     val complete: Boolean = false,
+    val type: TaskType
 ) {
     companion object {
         const val NAME = "task"
@@ -28,6 +30,17 @@ internal fun TaskEntity.toDomain(): Task {
         title = title,
         description = description,
         dueDate = dueDate,
-        complete = complete
+        complete = complete,
+        type = type
+    )
+}
+
+internal fun Task.toEntity(): TaskEntity {
+    return TaskEntity(
+        title = title,
+        description = description,
+        dueDate = dueDate,
+        complete = complete,
+        type = type
     )
 }

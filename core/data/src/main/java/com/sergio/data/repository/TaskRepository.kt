@@ -11,10 +11,6 @@ interface TaskRepository {
 
     suspend fun loadAllTasks(): List<Task>
 
-    suspend fun saveTask(
-        title: String,
-        description: String,
-        dueDate: String,
-    )
+    suspend fun saveTask(task: Task)
 
 }

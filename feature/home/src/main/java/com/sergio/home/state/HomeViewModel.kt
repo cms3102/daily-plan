@@ -1,6 +1,8 @@
 package com.sergio.home.state
 
 import androidx.lifecycle.viewModelScope
+import com.challenge.model.Task
+import com.challenge.model.TaskType
 import com.sergio.common.base.BaseViewModel
 import com.sergio.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +41,11 @@ class HomeViewModel @Inject constructor(
                 loadAllTasks()
             }
             is HomeIntent.SaveTask -> {
-                saveTask(intent.title, intent.description)
+                saveTask(
+                    title = intent.title,
+                    description = intent.description,
+                    type = intent.type
+                )
             }
         }
     }
@@ -69,10 +75,22 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun saveTask(title: String, description: String) {
+    private fun saveTask(
+        title: String,
+        description: String,
+        type: TaskType
+    ) {
         viewModelScope.launch {
             // TODO dueDate 작업 필요
-            taskRepository.saveTask(title, description, "")
+            taskRepository.saveTask(
+                Task(
+                    title = title,
+                    description = description,
+                    type = type,
+                    complete = false,
+                    dueDate = ""
+                )
+            )
         }
     }
 

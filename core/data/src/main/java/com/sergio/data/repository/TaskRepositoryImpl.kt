@@ -3,6 +3,7 @@ package com.sergio.data.repository
 import com.challenge.model.Task
 import com.sergio.data.database.entity.TaskEntity
 import com.sergio.data.database.entity.toDomain
+import com.sergio.data.database.entity.toEntity
 import com.sergio.data.datasource.TaskLocalDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -44,14 +45,8 @@ class TaskRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun saveTask(title: String, description: String, dueDate: String) {
-        taskLocalDataSource.saveTask(
-            TaskEntity(
-                title = title,
-                description = description,
-                dueDate = dueDate
-            )
-        )
+    override suspend fun saveTask(task: Task) {
+        taskLocalDataSource.saveTask(task.toEntity())
     }
 
 }
