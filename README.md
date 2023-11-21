@@ -10,21 +10,21 @@ In progress..
 
 ## Tech stack & libraries
 
-Kotlin + Coroutines + Flow
+- Kotlin + Coroutines + Flow
 
-Jetpack Compose for buliding UI.
+- Jetpack Compose for buliding UI.
 
-Hilt for dependency injection.
+- Hilt for dependency injection.
 
-Room for local database.
+- Room for local database.
 
 ### Architecture
 
-Follows Google's official architecture guide.
+- Follows Google's official architecture guide.
 
-MVI Architecture (Model - View - Intent)
+- MVI Architecture (Model - View - Intent)
 
-Multi Module Project
+- Multi Module Project
 
 ### Libraries
 
