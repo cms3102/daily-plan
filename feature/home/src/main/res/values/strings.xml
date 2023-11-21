@@ -3,8 +3,8 @@
     <string name="home_title">Simple Planner</string>
     <string name="home_destination_title">홈</string>
     <string name="home_app_bar_title">홈</string>
-    <string name="pending_tasks">진행 중인 작업</string>
-    <string name="completed_tasks">완료한 작업</string>
+    <string name="pending_tasks">진행 중인 일정</string>
+    <string name="completed_tasks">완료한 일정</string>
     <string name="task_list_title">나의 할 일</string>
     <string name="task_title">제목</string>
     <string name="task_description">내용</string>
@@ -13,4 +13,6 @@
     <string name="request_input_all">제목과 내용을 입력해 주세요.</string>
     <string name="request_select_type">유형을 선택해 주세요.</string>
     <string name="create">생성</string>
+    <string name="rate_format">%s%%</string>
+    <string name="complete">완료</string>
 </resources>

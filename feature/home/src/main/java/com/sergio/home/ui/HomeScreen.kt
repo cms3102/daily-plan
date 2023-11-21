@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.ModalBottomSheetLayout
@@ -37,7 +34,6 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -49,11 +45,10 @@ import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -61,17 +56,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.challenge.detail.navigation.navigateToDetail
 import com.challenge.model.Task
+import com.challenge.model.TaskType
 import com.sergio.common.component.DefaultError
 import com.sergio.common.component.Loading
 import com.sergio.common.component.NoData
 import com.sergio.common.theme.BottomSheetShape
-import com.sergio.common.theme.DeepYellow
-import com.sergio.common.theme.ElevationRules
-import com.sergio.common.theme.LightPurple
+import com.sergio.common.theme.DeepGray
 import com.sergio.common.theme.PaddingRules
-import com.sergio.common.theme.PastelGreen
-import com.sergio.common.theme.PastelPurple
-import com.sergio.common.theme.PastelYellow
 import com.sergio.common.theme.ShapeRules
 import com.sergio.common.theme.SimplePlannerTheme
 import com.sergio.home.R
@@ -156,10 +147,6 @@ fun TitleBar() {
 
 @Composable
 fun TaskInformation(data: TaskModel) {
-    val chartColors = listOf(
-        DeepYellow,
-        PastelPurple,
-    )
     Column(modifier = Modifier.fillMaxWidth()) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -175,43 +162,60 @@ fun TaskInformation(data: TaskModel) {
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(PaddingRules.Box.all)
+                        .padding(start = 20.dp)
                 ) {
                     Text(
                         text = stringResource(id = R.string.pending_tasks),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                     Spacer(modifier = Modifier.height(20.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            modifier = Modifier
-                                .size(10.dp)
-                                .clip(CircleShape)
-                                .background(chartColors.first())
-                        )
-                        Text(
-                            modifier = Modifier
-                                .padding(start = 8.dp),
-                            text = stringResource(id = R.string.pending_tasks),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            style = LocalTextStyle.current.merge(
-                                TextStyle(
-                                    platformStyle = PlatformTextStyle(
-                                        includeFontPadding = false
+                    val typeList = TaskType.values().toList()
+                    typeList.forEach { type ->
+                        Row(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            TypeCircle(
+                                size = 10.dp,
+                                color = chartColors.getValue(type)
+                            )
+                            Text(
+                                modifier = Modifier.padding(start = 6.dp),
+                                text = type.value,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                letterSpacing = 0.sp,
+                                fontSize = 13.sp,
+                                style = LocalTextStyle.current.merge(
+                                    TextStyle(
+                                        platformStyle = PlatformTextStyle(
+                                            includeFontPadding = false
+                                        )
                                     )
                                 )
                             )
-                        )
+                        }
                     }
                 }
-
+                
                 PieChart(
-                    data = mapOf(
-                        "미완료" to 40,
-                        "완료" to 60
-                    ),
-                    colors = chartColors,
-                    modifier = Modifier.weight(1f)
+                    data = data.chartData,
+                    colors = chartColors.map { it.value },
+                    modifier = Modifier.weight(1f),
+                    centerCircleContent = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            val completionRate = data.completedCount / data.taskList.size
+                            Text(
+                                text = stringResource(id = R.string.rate_format).format(completionRate),
+                                fontSize = 13.sp,
+                                color = DeepGray
+                            )
+                            Text(
+                                text = stringResource(id = R.string.complete),
+                                fontSize = 13.sp,
+                                color = DeepGray
+                            )
+                        }
+                    }
                 )
 
             }
@@ -274,6 +278,19 @@ fun TaskInformation(data: TaskModel) {
 }
 
 @Composable
+fun TypeCircle(
+    size: Dp,
+    color: Color
+) {
+    Box(
+        modifier = Modifier
+            .size(size)
+            .clip(CircleShape)
+            .background(color)
+    )
+}
+
+@Composable
 fun TaskList(
     taskList: List<Task>,
     onClickItem: (task: Task) -> Unit
@@ -318,7 +335,7 @@ fun TaskItem(
             Box(
                 modifier = Modifier
                     .width(6.dp)
-                    .background(PastelPurple)
+                    .background(chartColors.getValue(task.type))
                     .fillMaxHeight()
             )
             Column(
@@ -347,12 +364,20 @@ fun TaskItem(
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Text(
+                        modifier = Modifier.padding(start = 4.dp),
+                        text = task.type.value,
+                        fontSize = 10.sp,
+                        letterSpacing = 0.sp,
+                    )
                     Text(
                         text = task.dueDate,
                         color = Color.Gray,
-                        fontSize = 12.sp
+                        fontSize = 10.sp,
+                        letterSpacing = 0.sp,
                     )
                 }
             }

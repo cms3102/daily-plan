@@ -65,6 +65,7 @@ fun RegistrationScreen(
         titleState = ""
         descriptionState = ""
         focusManager.clearFocus()
+        selectedType = TaskType.Personal
     }
 
     Box(
