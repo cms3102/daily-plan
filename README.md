@@ -28,6 +28,6 @@ In progress..
 
 ### Libraries
 
-Lottie - A collection of extension libraries for Jetpack Compose.
+- Lottie - A collection of extension libraries for Jetpack Compose.
 
 Will be added..
