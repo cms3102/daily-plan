@@ -14,9 +14,10 @@ data class TaskModel(
 )
 
 internal fun List<Task>.toModel(): TaskModel {
-    val pendingList = filter { it.complete.not() }
+    val descendedList = sortedByDescending { it.id }
+    val pendingList = descendedList.filter { it.complete.not() }
     return TaskModel(
-        taskList = this,
+        taskList = descendedList,
         pendingList = pendingList,
         chartData = pendingList
             .sortedBy { it.type }

@@ -1,6 +1,19 @@
 package com.sergio.home.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +29,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
@@ -28,18 +43,29 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -50,6 +76,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -60,6 +87,7 @@ import com.challenge.model.TaskType
 import com.sergio.common.component.DefaultError
 import com.sergio.common.component.Loading
 import com.sergio.common.component.NoData
+import com.sergio.common.component.animation.ScaleAnimationVisibility
 import com.sergio.common.theme.BottomSheetShape
 import com.sergio.common.theme.DeepGray
 import com.sergio.common.theme.PaddingRules
@@ -120,7 +148,8 @@ fun HomeScreen(
                         NoData()
                     }
                 }
-                RegistrationButton {
+
+                RegistrationButton() {
                     coroutineScope.launch {
                         bottomSheetState.show()
                     }
@@ -291,6 +320,7 @@ fun TypeCircle(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskList(
     taskList: List<Task>,
@@ -300,29 +330,39 @@ fun TaskList(
         modifier = Modifier.padding(top = 20.dp, bottom = 8.dp),
         text = stringResource(id = R.string.task_list_title),
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp
+        fontSize = 18.sp,
     )
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+
+    val lazyListState = rememberLazyListState()
+    LaunchedEffect(key1 = taskList) {
+        lazyListState.animateScrollToItem(0)
+    }
+
+    LazyColumn(
+        state = lazyListState
+    ) {
         items(
             items = taskList,
             key = { task -> task.id }
         ) { task ->
             TaskItem(
                 task = task,
+                modifier = Modifier.animateItemPlacement(animationSpec = tween(1000)),
                 onClick = onClickItem
             )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TaskItem(
     task: Task,
+    modifier: Modifier = Modifier,
     onClick: (task: Task) -> Unit
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 5.dp)
             .height(120.dp),
@@ -394,17 +434,23 @@ fun RegistrationButton(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomEnd
     ) {
-        FloatingActionButton(
-            modifier = Modifier.padding(end = 20.dp, bottom = 30.dp),
-            shape = RoundedCornerShape(12.dp),
-            backgroundColor = MaterialTheme.colorScheme.primary,
-            onClick = { onClick.invoke() }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Add,
-                tint = MaterialTheme.colorScheme.onPrimary,
-                contentDescription = "Task Registration Button"
-            )
+        val visible = remember {
+            MutableTransitionState(false)
+                .apply { targetState = true }
+        }
+        ScaleAnimationVisibility(visible) {
+            FloatingActionButton(
+                modifier = Modifier.padding(end = 20.dp, bottom = 30.dp),
+                shape = RoundedCornerShape(12.dp),
+                backgroundColor = MaterialTheme.colorScheme.primary,
+                onClick = { onClick.invoke() }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    contentDescription = "Task Registration Button"
+                )
+            }
         }
     }
 }
