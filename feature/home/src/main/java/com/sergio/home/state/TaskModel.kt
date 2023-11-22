@@ -5,6 +5,7 @@ import com.challenge.model.TaskType
 
 data class TaskModel(
     val taskList: List<Task>,
+    val pendingList: List<Task>,
     val chartData: Map<String, Int>,
     val pendingCount: Int,
     val completedCount: Int,
@@ -13,9 +14,13 @@ data class TaskModel(
 )
 
 internal fun List<Task>.toModel(): TaskModel {
+    val pendingList = filter { it.complete.not() }
     return TaskModel(
         taskList = this,
-        chartData = groupBy { it.type }
+        pendingList = pendingList,
+        chartData = pendingList
+            .sortedBy { it.type }
+            .groupBy { it.type }
             .map { it.key.value to it.value.size }
             .toMap(),
         pendingCount = count { it.complete.not() },

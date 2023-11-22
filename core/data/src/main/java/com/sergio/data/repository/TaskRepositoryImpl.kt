@@ -49,4 +49,14 @@ class TaskRepositoryImpl @Inject constructor(
         taskLocalDataSource.saveTask(task.toEntity())
     }
 
+    override suspend fun loadTask(id: Long): Task {
+        return taskLocalDataSource
+            .loadTask(id)
+            .toDomain()
+    }
+
+    override suspend fun completeTask(id: Long) {
+        taskLocalDataSource.completeTask(id)
+    }
+
 }

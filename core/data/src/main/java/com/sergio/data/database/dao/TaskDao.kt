@@ -18,4 +18,10 @@ interface TaskDao {
     @Insert
     suspend fun saveTask(task: TaskEntity)
 
+    @Query("SELECT * FROM ${TaskEntity.NAME} WHERE id = :id")
+    suspend fun loadTask(id: Long): TaskEntity
+
+    @Query("UPDATE ${TaskEntity.NAME} SET complete = :complete WHERE id = :id")
+    suspend fun completeTask(id: Long, complete: Boolean = true)
+
 }

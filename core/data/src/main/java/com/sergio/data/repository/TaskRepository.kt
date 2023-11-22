@@ -13,4 +13,8 @@ interface TaskRepository {
 
     suspend fun saveTask(task: Task)
 
+    suspend fun loadTask(id: Long): Task
+
+    suspend fun completeTask(id: Long)
+
 }

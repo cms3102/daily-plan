@@ -21,4 +21,12 @@ internal class TaskLocalDataSourceImpl @Inject constructor(
         taskDao.saveTask(task)
     }
 
+    override suspend fun loadTask(id: Long): TaskEntity {
+        return taskDao.loadTask(id)
+    }
+
+    override suspend fun completeTask(id: Long) {
+        taskDao.completeTask(id = id)
+    }
+
 }

@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.challenge.model.TaskType
+import com.sergio.common.component.BottomActionButton
 import com.sergio.common.theme.ComponentSizeRules
 import com.sergio.common.theme.LightGray
 import com.sergio.common.theme.SimplePlannerTheme
@@ -99,11 +100,10 @@ fun RegistrationScreen(
                 ) { menu ->
                     selectedType = menu
                 }
-                Button(
+                BottomActionButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 60.dp, bottom = 10.dp)
-                        .height(ComponentSizeRules.Button.bottomActionButtonHeight),
+                        .padding(top = 60.dp, bottom = 10.dp),
                     onClick = {
                         if (titleState.isNotEmpty() && descriptionState.isNotEmpty()) {
                             titleErrorState = false

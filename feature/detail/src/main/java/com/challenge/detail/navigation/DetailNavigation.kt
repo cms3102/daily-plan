@@ -23,10 +23,8 @@ object Detail : BaseDestination {
         get() = detailRoute
 }
 
-fun NavController.navigateToDetail(data: Task) {
-    val json = Gson().toJson(data)
-    val param = Uri.encode(json)
-    navigate("$detailRoute/$param")
+fun NavController.navigateToDetail(taskId: Long) {
+    navigate("$detailRoute/$taskId")
 }
 
 fun NavGraphBuilder.detailScreen(navController: NavController) {
@@ -34,15 +32,10 @@ fun NavGraphBuilder.detailScreen(navController: NavController) {
         route = "$detailRoute/{$detailArg}",
         arguments = listOf(
             navArgument(detailArg) {
-                type = NavType.StringType
+                type = NavType.LongType
             }
         )
-    ) { entry ->
-        val param = entry.arguments?.getString(detailArg)
-        val data = Gson().fromJson(param, Task::class.java)
-        DetailScreen(
-            navController = navController,
-            task = data
-        )
+    ) {
+        DetailScreen(navController = navController)
     }
 }

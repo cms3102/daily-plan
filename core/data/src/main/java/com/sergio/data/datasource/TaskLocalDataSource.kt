@@ -11,6 +11,10 @@ interface TaskLocalDataSource {
 
     suspend fun saveTask(task: TaskEntity)
 
+    suspend fun loadTask(id: Long): TaskEntity
+
+    suspend fun completeTask(id: Long)
+
 
 
 }

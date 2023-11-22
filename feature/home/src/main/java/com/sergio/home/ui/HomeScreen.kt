@@ -110,9 +110,9 @@ fun HomeScreen(
                     TaskInformation(taskData)
                     if (taskData.taskList.isNotEmpty()) {
                         TaskList(
-                            taskList = taskData.taskList,
+                            taskList = taskData.pendingList,
                             onClickItem = { task ->
-                                navController.navigateToDetail(task)
+                                navController.navigateToDetail(task.id)
                             }
                         )
                     } else {
@@ -196,14 +196,14 @@ fun TaskInformation(data: TaskModel) {
                         }
                     }
                 }
-                
+
                 PieChart(
                     data = data.chartData,
                     colors = chartColors.map { it.value },
                     modifier = Modifier.weight(1f),
                     centerCircleContent = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            val completionRate = data.completedCount / data.taskList.size
+                            val completionRate = ((data.completedCount.toDouble() / data.taskList.size.toDouble()) * 100).toInt()
                             Text(
                                 text = stringResource(id = R.string.rate_format).format(completionRate),
                                 fontSize = 13.sp,
@@ -230,7 +230,7 @@ fun TaskInformation(data: TaskModel) {
             Card(
                 modifier = Modifier.weight(1f),
                 shape = ShapeRules.roundedCornerShape.medium,
-                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onSecondary
@@ -253,7 +253,7 @@ fun TaskInformation(data: TaskModel) {
             Card(
                 modifier = Modifier.weight(1f),
                 shape = ShapeRules.roundedCornerShape.medium,
-                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onSecondary

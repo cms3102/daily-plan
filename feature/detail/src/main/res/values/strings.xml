@@ -2,4 +2,7 @@
 <resources>
     <string name="detail_destination_title">상세</string>
     <string name="detail_app_bar_title">상세</string>
+    <string name="change_to_completion">완료로 변경</string>
+    <string name="completed">완료</string>
+    <string name="error_not_found">데이터를 불러오지 못했습니다.</string>
 </resources>

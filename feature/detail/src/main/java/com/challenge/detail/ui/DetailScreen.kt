@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -25,12 +27,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,22 +46,31 @@ import androidx.constraintlayout.compose.atLeastWrapContent
 import androidx.constraintlayout.compose.atMost
 import androidx.constraintlayout.compose.atMostWrapContent
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.challenge.detail.R
 import com.challenge.detail.navigation.Detail
+import com.challenge.detail.state.DetailIntent
+import com.challenge.detail.state.DetailState
 import com.challenge.detail.state.DetailViewModel
 import com.challenge.model.Task
+import com.sergio.common.component.BottomActionButton
+import com.sergio.common.component.DefaultError
 import com.sergio.common.component.DefaultScaffold
+import com.sergio.common.component.Loading
 import com.sergio.common.theme.PaddingRules
 import com.sergio.common.theme.PastelPurple
 import com.sergio.common.theme.ShapeRules
+import com.sergio.common.theme.TextSizeRules
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     navController: NavController,
-    task: Task,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
+    val taskState by viewModel.state.collectAsStateWithLifecycle()
+
     DefaultScaffold(
         navController = navController,
         showBackButton = true,
@@ -69,13 +83,15 @@ fun DetailScreen(
     ) {
         ConstraintLayout(modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red))
+            .background(Color.Red)
+        )
         {
             val (
                 topBackground,
                 bottomBackground,
                 titleBox,
-                descriptionBox
+                descriptionBox,
+                completionButton
             ) = createRefs()
 
             Box(
@@ -103,39 +119,74 @@ fun DetailScreen(
                     }
             )
 
-            TitleBox(
-                task = task,
-                modifier = Modifier
-                    .constrainAs(titleBox) {
-                        top.linkTo(topBackground.bottom)
-                        bottom.linkTo(topBackground.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        width = Dimension.fillToConstraints
-                        height = Dimension.value(120.dp)
-                    }
-                    .padding(horizontal = 28.dp)
-                    .padding(bottom = 14.dp),
-            )
-
-            DescriptionBox(
-                description = task.description,
-                modifier = Modifier
-                    .constrainAs(descriptionBox) {
-                        linkTo(
-                            top = titleBox.bottom,
-                            bottom = parent.bottom,
-                            start = parent.start,
-                            end = parent.end,
-                            verticalBias = 0f
+            when(val state = taskState) {
+                is DetailState.Loading -> Loading()
+                is DetailState.Success -> {
+                    val task = state.data
+                    TitleBox(
+                        task = task,
+                        modifier = Modifier
+                            .constrainAs(titleBox) {
+                                top.linkTo(topBackground.bottom)
+                                bottom.linkTo(topBackground.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                width = Dimension.fillToConstraints
+                                height = Dimension.value(120.dp)
+                            }
+                            .padding(horizontal = 28.dp)
+                            .padding(bottom = 14.dp),
+                    )
+                    DescriptionBox(
+                        description = task.description,
+                        modifier = Modifier
+                            .constrainAs(descriptionBox) {
+                                linkTo(
+                                    top = titleBox.bottom,
+                                    bottom = parent.bottom,
+                                    start = parent.start,
+                                    end = parent.end,
+                                    verticalBias = 0f
+                                )
+                                width = Dimension.fillToConstraints
+                                height = Dimension.preferredWrapContent.atLeast(400.dp)
+                            }
+                            .padding(horizontal = 28.dp, vertical = 20.dp)
+                            .clip(ShapeRules.roundedCornerShape.medium)
+                    )
+                    CompletionButton(
+                        modifier = Modifier
+                            .constrainAs(completionButton) {
+                                linkTo(
+                                    top = descriptionBox.bottom,
+                                    bottom = parent.bottom,
+                                    start = parent.start,
+                                    end = parent.end,
+                                    verticalBias = 0f
+                                )
+                                width = Dimension.fillToConstraints
+                            }
+                            .padding(horizontal = 28.dp, vertical = 20.dp),
+                        buttonText = stringResource(
+                            id = if (task.complete) {
+                                R.string.completed
+                            } else {
+                                R.string.change_to_completion
+                            }
+                        ),
+                        enabled = !task.complete,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (task.complete) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary,
+                            contentColor = if (task.complete) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onPrimary
                         )
-                        width = Dimension.fillToConstraints
-                        height = Dimension.preferredWrapContent.atLeast(400.dp)
+                    ) {
+                        viewModel.sendIntent(
+                            DetailIntent.CompleteTask(task.id)
+                        )
                     }
-                    .padding(horizontal = 28.dp, vertical = 20.dp)
-                    .clip(ShapeRules.roundedCornerShape.medium)
-            )
-
+                }
+                is DetailState.Failure -> DefaultError()
+            }
 
         }
     }
@@ -197,6 +248,27 @@ fun DescriptionBox(description: String, modifier: Modifier) {
             modifier = Modifier.fillMaxWidth(),
             text = description,
             color = Color.Gray,
+        )
+    }
+}
+
+@Composable
+fun CompletionButton(
+    modifier: Modifier,
+    buttonText: String,
+    enabled: Boolean = true,
+    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    onClick: () -> Unit
+) {
+    BottomActionButton(
+        modifier = modifier,
+        enabled = enabled,
+        colors = colors,
+        onClick = { onClick.invoke() }
+    ) {
+        Text(
+            text = buttonText,
+            fontSize = TextSizeRules.Button.bottomActionButton
         )
     }
 }

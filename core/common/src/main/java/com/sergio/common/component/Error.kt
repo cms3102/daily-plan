@@ -10,11 +10,11 @@ import androidx.compose.ui.res.stringResource
 import com.sergio.common.R
 
 @Composable
-fun DefaultError() {
+fun DefaultError(message: String = stringResource(id = R.string.error)) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
-        Text(text = stringResource(id = R.string.error))
+        Text(text = message)
     }
 }

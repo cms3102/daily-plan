@@ -6,19 +6,24 @@ import com.challenge.model.TaskType
 import com.sergio.common.base.BaseViewModel
 import com.sergio.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val taskRepository: TaskRepository,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : BaseViewModel<HomeIntent, HomeState>() {
 
     private val _state = MutableStateFlow<HomeState>(HomeState.Loading)
@@ -55,6 +60,7 @@ class HomeViewModel @Inject constructor(
             taskRepository.tasks
                 .distinctUntilChanged()
                 .map { it.toModel() }
+                .flowOn(defaultDispatcher)
                 .collectLatest { model ->
                     updateState {
                         HomeState.Success(model)
@@ -65,10 +71,8 @@ class HomeViewModel @Inject constructor(
 
     private fun loadAllTasks() {
         viewModelScope.launch {
-            val model  = async {
-                val taskList = taskRepository.loadAllTasks()
-                taskList.toModel()
-            }.await()
+            val taskList = taskRepository.loadAllTasks()
+            val model = withContext(defaultDispatcher) { taskList.toModel() }
             updateState {
                 HomeState.Success(model)
             }
