@@ -94,6 +94,7 @@ fun HomeScreen(
             )
         },
     ) {
+        println("데이터 : $taskState")
         when(val state = taskState) {
             is HomeState.Loading -> Loading()
             is HomeState.Success -> {
@@ -108,9 +109,10 @@ fun HomeScreen(
                     TitleBar()
                     val taskData = state.data
                     TaskInformation(taskData)
-                    if (taskData.taskList.isNotEmpty()) {
+                    val pendingList = taskData.pendingList
+                    if (pendingList.isNotEmpty()) {
                         TaskList(
-                            taskList = taskData.pendingList,
+                            taskList = pendingList,
                             onClickItem = { task ->
                                 navController.navigateToDetail(task.id)
                             }
