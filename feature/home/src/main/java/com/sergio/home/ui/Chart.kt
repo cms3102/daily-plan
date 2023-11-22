@@ -26,11 +26,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.challenge.model.TaskType
-import com.sergio.common.theme.OrangeYellow
 import com.sergio.common.theme.PastelPurple
+import com.sergio.common.theme.BananaYellow
 
 internal val chartColors = mapOf(
-    TaskType.Personal to OrangeYellow,
+    TaskType.Personal to BananaYellow,
     TaskType.Team to PastelPurple,
 )
 

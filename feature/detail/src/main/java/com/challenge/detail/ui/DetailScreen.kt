@@ -217,7 +217,7 @@ fun TitleBox(task: Task, modifier: Modifier) {
             Box(
                 modifier = Modifier
                     .width(6.dp)
-                    .background(PastelPurple)
+                    .background(Color(task.typeColor))
                     .fillMaxHeight()
             )
             Column(
@@ -226,7 +226,9 @@ fun TitleBox(task: Task, modifier: Modifier) {
                     .padding(14.dp)
             ) {
                 Text(
-                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                     text = task.title,
                     color = MaterialTheme.colorScheme.onSecondary,
                     style = MaterialTheme.typography.titleLarge,

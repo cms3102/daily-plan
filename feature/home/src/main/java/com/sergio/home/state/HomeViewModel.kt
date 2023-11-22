@@ -1,14 +1,16 @@
 package com.sergio.home.state
 
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.viewModelScope
 import com.challenge.model.Task
 import com.challenge.model.TaskType
 import com.sergio.common.base.BaseViewModel
+import com.sergio.common.theme.PastelPurple
+import com.sergio.common.theme.BananaYellow
 import com.sergio.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -93,7 +95,11 @@ class HomeViewModel @Inject constructor(
                     description = description,
                     type = type,
                     complete = false,
-                    dueDate = dueDate
+                    dueDate = dueDate,
+                    typeColor = when(type) {
+                        TaskType.Personal -> BananaYellow.toArgb()
+                        TaskType.Team -> PastelPurple.toArgb()
+                    }
                 )
             )
         }

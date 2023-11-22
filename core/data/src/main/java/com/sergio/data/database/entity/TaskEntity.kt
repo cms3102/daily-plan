@@ -1,5 +1,6 @@
 package com.sergio.data.database.entity
 
+import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -17,7 +18,8 @@ data class TaskEntity(
     @ColumnInfo("due_date_original")
     val dueDateOriginal: Long? = null,
     val complete: Boolean = false,
-    val type: TaskType
+    val type: TaskType,
+    val typeColor: Int
 ) {
     companion object {
         const val NAME = "task"
@@ -31,7 +33,8 @@ internal fun TaskEntity.toDomain(): Task {
         description = description,
         dueDate = dueDate,
         complete = complete,
-        type = type
+        type = type,
+        typeColor = typeColor
     )
 }
 
@@ -41,6 +44,7 @@ internal fun Task.toEntity(): TaskEntity {
         description = description,
         dueDate = dueDate,
         complete = complete,
-        type = type
+        type = type,
+        typeColor = typeColor
     )
 }
