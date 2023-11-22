@@ -114,7 +114,7 @@ fun DetailScreen(
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         width = Dimension.fillToConstraints
-                        height = Dimension.value(220.dp)
+                        height = Dimension.value(230.dp)
                     }
             )
 
@@ -163,7 +163,7 @@ fun DetailScreen(
                                 width = Dimension.fillToConstraints
                                 height = Dimension.preferredWrapContent.atLeast(400.dp)
                             }
-                            .padding(horizontal = 28.dp, vertical = 20.dp)
+                            .padding(horizontal = 28.dp, vertical = 16.dp)
                             .clip(ShapeRules.roundedCornerShape.medium)
                     )
                     CompletionButton(
@@ -223,10 +223,10 @@ fun TitleBox(task: Task, modifier: Modifier) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(10.dp)
+                    .padding(14.dp)
             ) {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().weight(1f),
                     text = task.title,
                     color = MaterialTheme.colorScheme.onSecondary,
                     style = MaterialTheme.typography.titleLarge,
@@ -235,12 +235,22 @@ fun TitleBox(task: Task, modifier: Modifier) {
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.Bottom
                 ) {
                     Text(
-                        text = task.dueDate,
-                        color = Color.Gray,
-                        fontSize = 12.sp
+                        modifier = Modifier.padding(start = 4.dp),
+                        text = stringResource(id = R.string.task_type_format).format(task.type.value),
+                        color = MaterialTheme.colorScheme.onTertiary,
+                        fontSize = 10.sp,
+                        letterSpacing = 0.sp,
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = stringResource(id = R.string.due_date_format).format(task.dueDate),
+                        color = MaterialTheme.colorScheme.onTertiary,
+                        fontSize = 10.sp,
+                        letterSpacing = 0.sp,
                     )
                 }
             }

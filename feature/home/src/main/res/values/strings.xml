@@ -12,7 +12,13 @@
     <string name="request_task_description">내용을 입력해 주세요.</string>
     <string name="request_input_all">제목과 내용을 입력해 주세요.</string>
     <string name="request_select_type">유형을 선택해 주세요.</string>
+    <string name="request_select_due_date">마감일을 선택해 주세요.</string>
     <string name="create">생성</string>
     <string name="rate_format">%s%%</string>
     <string name="complete">완료</string>
+    <string name="pick_due_date">마감일 선택</string>
+    <string name="complete_pick">선택</string>
+    <string name="cancel_pick">취소</string>
+    <string name="task_type_format">유형 : %s</string>
+    <string name="due_date_format">마감일 : %s</string>
 </resources>

@@ -5,4 +5,6 @@
     <string name="change_to_completion">완료로 변경</string>
     <string name="completed">완료</string>
     <string name="error_not_found">데이터를 불러오지 못했습니다.</string>
+    <string name="task_type_format">유형 : %s</string>
+    <string name="due_date_format">마감일 : %s</string>
 </resources>

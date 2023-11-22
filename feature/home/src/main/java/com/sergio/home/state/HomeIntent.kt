@@ -10,7 +10,8 @@ sealed interface HomeIntent : BaseIntent {
     data class SaveTask(
         val title: String,
         val description: String,
-        val type: TaskType
+        val type: TaskType,
+        val dueDate: String
     ) : HomeIntent
 
 }

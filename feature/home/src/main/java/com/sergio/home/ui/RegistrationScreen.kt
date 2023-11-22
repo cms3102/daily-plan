@@ -14,14 +14,19 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.TextButton
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,8 +53,11 @@ import com.sergio.home.R
 import com.sergio.home.state.HomeIntent
 import com.sergio.home.state.HomeViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen(
     state: ModalBottomSheetState,
@@ -59,9 +67,11 @@ fun RegistrationScreen(
     var titleErrorState by remember { mutableStateOf(false) }
     var descriptionState by remember { mutableStateOf("") }
     var descriptionErrorState by remember { mutableStateOf(false) }
+    var dueDateState by remember { mutableStateOf("") }
+    val datePickerState = rememberDatePickerState()
+    val coroutineScope = rememberCoroutineScope()
     val typeList = TaskType.values().toList()
     var selectedType by remember { mutableStateOf(typeList.first()) }
-    val coroutineScope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
 
     if (state.currentValue == ModalBottomSheetValue.Hidden) {
@@ -69,6 +79,7 @@ fun RegistrationScreen(
         descriptionState = ""
         focusManager.clearFocus()
         selectedType = TaskType.Personal
+        datePickerState.setSelection(null)
     }
 
     Box(
@@ -102,6 +113,11 @@ fun RegistrationScreen(
                 ) { menu ->
                     selectedType = menu
                 }
+
+                DueDatePicker(datePickerState) { selectedDate ->
+                    dueDateState = selectedDate
+                }
+
                 BottomActionButton(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -114,7 +130,11 @@ fun RegistrationScreen(
                                 HomeIntent.SaveTask(
                                     title = titleState,
                                     description = descriptionState,
-                                    type = selectedType
+                                    type = selectedType,
+                                    dueDate = dueDateState.ifEmpty {
+                                        val tomorrow = System.currentTimeMillis().plus(86400000)
+                                        convertMillisToDate(tomorrow)
+                                    }
                                 )
                             )
                             coroutineScope.launch { state.hide() }
@@ -209,6 +229,71 @@ private fun TypeSelector(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DueDatePicker(
+    state: DatePickerState,
+    onConfirm: (date: String) -> Unit
+) {
+    Text(
+        modifier = Modifier.padding(top = 20.dp),
+        text = stringResource(id = R.string.request_select_due_date)
+    )
+    var openDialog by remember { mutableStateOf(false) }
+    val selectedDateMills = state.selectedDateMillis
+    if (openDialog) {
+        DatePickerDialog(
+            onDismissRequest = {
+                state.setSelection(null)
+                openDialog = false
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        selectedDateMills?.run {
+                            openDialog = false
+                            onConfirm(convertMillisToDate(this))
+                        }
+                    }
+                ) {
+                    Text(stringResource(id = R.string.complete_pick))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        state.setSelection(null)
+                        openDialog = false
+                    }
+                ) {
+                    Text(stringResource(id = R.string.cancel_pick))
+                }
+            }
+        ) {
+            DatePicker(state)
+        }
+    }
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp)
+            .height(45.dp),
+        onClick = { openDialog = true }
+    ) {
+        val text = if (selectedDateMills == null) {
+            stringResource(id = R.string.pick_due_date)
+        } else {
+            convertMillisToDate(selectedDateMills)
+        }
+        Text(text = text)
+    }
+}
+
+private fun convertMillisToDate(millis: Long): String {
+    val formatter = SimpleDateFormat("yyyy-MM-dd")
+    return formatter.format(Date(millis))
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)

@@ -196,7 +196,8 @@ fun TaskInformation(data: TaskModel) {
                 ) {
                     Text(
                         text = stringResource(id = R.string.pending_tasks),
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = 18.sp
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     val typeList = TaskType.values().toList()
@@ -410,13 +411,15 @@ fun TaskItem(
                 ) {
                     Text(
                         modifier = Modifier.padding(start = 4.dp),
-                        text = task.type.value,
+                        text = stringResource(id = R.string.task_type_format).format(task.type.value),
+                        color = MaterialTheme.colorScheme.onTertiary,
                         fontSize = 10.sp,
                         letterSpacing = 0.sp,
                     )
                     Text(
-                        text = task.dueDate,
-                        color = Color.Gray,
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = stringResource(id = R.string.due_date_format).format(task.dueDate),
+                        color = MaterialTheme.colorScheme.onTertiary,
                         fontSize = 10.sp,
                         letterSpacing = 0.sp,
                     )

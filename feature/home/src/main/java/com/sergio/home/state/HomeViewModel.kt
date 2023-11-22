@@ -49,7 +49,8 @@ class HomeViewModel @Inject constructor(
                 saveTask(
                     title = intent.title,
                     description = intent.description,
-                    type = intent.type
+                    type = intent.type,
+                    dueDate = intent.dueDate
                 )
             }
         }
@@ -82,17 +83,17 @@ class HomeViewModel @Inject constructor(
     private fun saveTask(
         title: String,
         description: String,
-        type: TaskType
+        type: TaskType,
+        dueDate: String
     ) {
         viewModelScope.launch {
-            // TODO dueDate 작업 필요
             taskRepository.saveTask(
                 Task(
                     title = title,
                     description = description,
                     type = type,
                     complete = false,
-                    dueDate = ""
+                    dueDate = dueDate
                 )
             )
         }
