@@ -94,7 +94,6 @@ fun HomeScreen(
             )
         },
     ) {
-        println("데이터 : $taskState")
         when(val state = taskState) {
             is HomeState.Loading -> Loading()
             is HomeState.Success -> {

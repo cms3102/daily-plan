@@ -10,15 +10,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.sergio.common.R
 
-private val soyo = FontFamily(
-    Font(R.font.soyo_regular, FontWeight.Normal, FontStyle.Normal),
-    Font(R.font.soyo_bold, FontWeight.Bold, FontStyle.Normal),
+private val skybori = FontFamily(
+    Font(R.font.skybori, FontWeight.Normal, FontStyle.Normal),
 )
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = soyo,
+        fontFamily = skybori,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
