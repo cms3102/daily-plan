@@ -88,6 +88,7 @@ import com.sergio.common.component.DefaultError
 import com.sergio.common.component.Loading
 import com.sergio.common.component.NoData
 import com.sergio.common.component.animation.ScaleAnimationVisibility
+import com.sergio.common.theme.Black10
 import com.sergio.common.theme.BottomSheetShape
 import com.sergio.common.theme.DeepGray
 import com.sergio.common.theme.PaddingRules
@@ -179,14 +180,22 @@ fun TitleBar() {
 fun TaskInformation(data: TaskModel) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Surface(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp),
             shape = ShapeRules.roundedCornerShape.medium,
             color = MaterialTheme.colorScheme.primary
         ) {
+            Box(
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxSize()
+                    .clip(CircleShape)
+                    .background(Black10)
+            )
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp),
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(

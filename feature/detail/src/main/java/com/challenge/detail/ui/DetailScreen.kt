@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -70,6 +71,7 @@ import com.sergio.common.component.BottomActionButton
 import com.sergio.common.component.DefaultError
 import com.sergio.common.component.DefaultScaffold
 import com.sergio.common.component.Loading
+import com.sergio.common.theme.Black10
 import com.sergio.common.theme.PaddingRules
 import com.sergio.common.theme.PastelPurple
 import com.sergio.common.theme.ShapeRules
