@@ -53,6 +53,7 @@ class DetailViewModel @Inject constructor(
     private fun completeTask(id: Long) {
         viewModelScope.launch {
             taskRepository.completeTask(id)
+            loadTask(id)
         }
     }
 

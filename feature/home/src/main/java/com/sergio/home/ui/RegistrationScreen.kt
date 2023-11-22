@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
@@ -33,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -150,7 +152,8 @@ fun InputFields(
         onValueChange = onTitleChange,
         label = { Text(text = stringResource(id = R.string.task_title)) },
         singleLine = true,
-        isError = titleErrorState
+        isError = titleErrorState,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
     )
     Text(
         modifier = Modifier.padding(top = 20.dp),
@@ -165,6 +168,7 @@ fun InputFields(
         label = { Text(text = stringResource(id = R.string.task_description)) },
         singleLine = true,
         isError = descriptionErrorState,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
     )
 }
 
