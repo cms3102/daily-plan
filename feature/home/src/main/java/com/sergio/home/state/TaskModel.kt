@@ -14,7 +14,7 @@ data class TaskModel(
 )
 
 internal fun List<Task>.toModel(): TaskModel {
-    val descendedList = sortedByDescending { it.id }
+    val descendedList = sortedBy { it.dueDate }
     val pendingList = descendedList.filter { it.complete.not() }
     return TaskModel(
         taskList = descendedList,
