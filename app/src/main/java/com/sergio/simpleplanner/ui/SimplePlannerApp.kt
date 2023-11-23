@@ -2,6 +2,8 @@ package com.sergio.simpleplanner.ui
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalWindowInfo
 import com.sergio.common.component.DefaultScaffold
 import com.sergio.simpleplanner.navigation.AppState
 import com.sergio.simpleplanner.navigation.SimplePlannerNavHost
@@ -15,7 +17,10 @@ internal fun SimplePlannerApp(
     DefaultScaffold(
         navController = appState.navController,
         showBackButton = appState.showBackButton
-    ) {
-        SimplePlannerNavHost(appState = appState)
+    ) { insets ->
+        SimplePlannerNavHost(
+            appState = appState,
+            insets = insets
+        )
     }
 }

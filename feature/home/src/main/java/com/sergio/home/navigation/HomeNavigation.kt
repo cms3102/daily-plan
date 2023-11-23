@@ -1,13 +1,16 @@
 package com.sergio.home.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.sergio.common.base.BaseDestination
+import com.sergio.common.theme.setStatusBarColor
 import com.sergio.home.R
 import com.sergio.home.ui.HomeScreen
 

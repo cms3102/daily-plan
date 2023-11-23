@@ -29,8 +29,8 @@ fun DefaultScaffold(
     bottomBar: @Composable () -> Unit = {},
     content: @Composable (paddingValues: PaddingValues) -> Unit
 ) {
-    val topAppBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val showTopAppBar = destination != null
+    val topAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
         modifier = if (showTopAppBar) {
